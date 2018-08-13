@@ -1,5 +1,6 @@
 # (turn, hound1, hound2, hound3, hare, stalls)
-
+import random
+from itertools import combinations
 HOUND_PLAYER = 0
 HARE_PLAYER = 1
 
@@ -185,31 +186,27 @@ def fancy_solve(current_pos):
     best_rest = None
     for move in generate_moves(current_pos):
         new_pos = do_move(current_pos, move)
-        new_result, remoteness, rest = solve(new_pos)
+        new_result, remoteness = solve(new_pos)
         if current_turn == HARE_PLAYER:
             if new_result == HOUND_LOSS:
                 can_win = True
                 if remoteness + 1 < fastest_win:
                     fastest_win = remoteness + 1
                     best_move = move
-                    best_rest = rest
             elif not can_win:
                 if remoteness + 1 > slowest_loss:
                     slowest_loss = remoteness + 1
                     best_move = move
-                    best_rest = rest
         else:
             if new_result == HOUND_WIN:
                 can_win = True
                 if remoteness + 1 < fastest_win:
                     fastest_win = remoteness + 1
                     best_move = move
-                    best_rest = rest
             elif not can_win:
                 if remoteness + 1 > slowest_loss:
                     slowest_loss = remoteness + 1
                     best_move = move
-                    best_rest = rest
     if current_turn == HOUND_PLAYER:
         if can_win:
             return HOUND_WIN, fastest_win, move_list
@@ -232,9 +229,35 @@ def main():
             move = int(move.strip())
             pos = do_move(pos, move)
 
-           
+
+random =list(combinations(range(10),4))
+print(random)
+Position=[]
+for i in range(1):
+    for j in random:
+        for k in range(10):
+            a=compress(i,j[0],j[1],j[2],j[3],k)
+            Position.append(a)
+print(Position)
+number =len(Position)
+print(number)
+        
+                      
+solve_positions=[]
+for i in Position:
+    b= solve(i)
+    solve_positions.append(b)
+
+    
+c=solve(compress(1,0,1,3,10,0))
+d=solve(compress(0,0,1,3,10,0))
+print(d)#the value when hounds move first
+print(c)#the value when hare moves first
+
+print(solve_positions)           
 if __name__ == '__main__':
     #main()
     print(solve_next_moves(initial_position))
     #return(fancy_solve(initial_position))
-    
+
+
